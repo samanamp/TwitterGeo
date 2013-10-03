@@ -1,23 +1,43 @@
+<<<<<<< HEAD
 <html>
 	<head>
 		<title>Walmart locations all hexed up</title>
 
+=======
+
+<html>
+	<head>
+		<title>Walmart locations all hexed up</title>
+		
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 		<!-- styles -->
 		<link rel="stylesheet" type="text/css" href="./style/main.css" />
 		<link rel="stylesheet" type="text/css" href="./style/colorbrewer.css" />
 		<link rel="stylesheet" type="text/css" href="./style/colorbrewer.stroke.css" />
+<<<<<<< HEAD
 
 		<style type="text/css">
 
 			@import url("http://polymaps.org/style.css");
 
+=======
+		
+		<style type="text/css">
+			
+			@import url("http://polymaps.org/style.css");
+			
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 			div.map {
 				width: 600px;
 				height: 600px;
 				margin-right: 15px;
 				float: left;
 			}
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 			svg {
   				display: block;
 			}
@@ -28,19 +48,33 @@
   				fill-opacity: 1;
 			}
 		</style>
+<<<<<<< HEAD
 
 
+=======
+		
+		
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 		<!-- external libraries ( d3.js, polymaps, and HEX.js ) -->
 		<script type="text/javascript" src="./lib/d3.js"></script>
 		<script type="text/javascript" src="./lib/d3.geo.js"></script>
 		<script type="text/javascript" src="./lib/polymaps.js"></script>
 		<script type="text/javascript" src="./lib/hex.js"></script>
+<<<<<<< HEAD
 
 		<!-- indiemaps hexgrid layout -->
 		<script type="text/javascript" src="./src/d3.hexbin.js"></script>
 
 		<script type="text/javascript">
 
+=======
+		
+		<!-- indiemaps hexgrid layout -->
+		<script type="text/javascript" src="./src/d3.hexbin.js"></script>
+		
+		<script type="text/javascript">
+			
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 			var po = org.polymaps,
 				hexset, hexI = 12, map, focusMap, data, scale, countMax,
 				numClasses = 9,
@@ -48,18 +82,30 @@
 				cbScheme = "YlGnBu",
 				focusPointLayer, focusHex, focusNonHex,
 				dataURL = './data/json/sample.json';
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 			function init()
 			{
 				create_basemaps();
 				load_json();
 			};
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 			function create_basemaps()
 			{
 				map = po.map()
 					.container( d3.select( "#overviewMap" ).append( "svg:svg" ).node() );
+<<<<<<< HEAD
 
+=======
+					
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 				map.add(po.image()
     				.url(po.url("http://{S}tile.cloudmade.com"
     				+ "/1a1b06b230af4efdbb989ea99e9841af" // http://cloudmade.com/register
@@ -68,7 +114,11 @@
     			
     			focusMap = po.map()
     				.container( d3.select( "#focusMap" ).append( "svg:svg" ).node() );
+<<<<<<< HEAD
 
+=======
+					
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
     			focusMap.add(po.image()
     				.url(po.url("http://{S}tile.cloudmade.com"
     				+ "/1a1b06b230af4efdbb989ea99e9841af" // http://cloudmade.com/register
@@ -88,12 +138,21 @@
 					.attr( "stroke", "none" )
 					.attr( "stroke-width", 5 )
 					.attr( "fill", "none" );
+<<<<<<< HEAD
 
 
     			focusPointLayer = d3.select( "#focusMap svg" ).insert( "svg:g" );
 			};
 
 
+=======
+					
+				
+    			focusPointLayer = d3.select( "#focusMap svg" ).insert( "svg:g" );
+			};
+			
+			
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 			function load_json()
 			{
 				d3.json( dataURL, function( d )
@@ -104,8 +163,13 @@
 						{
 							return ( wm.geometry != null );
 						});
+<<<<<<< HEAD
 
 
+=======
+						
+					
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 					data = hasGeo;
 					map.extent(
 						[
@@ -113,25 +177,42 @@
 							{ lat : bounds[3], lon : bounds[2] }
 						]
 					).zoom(11);
+<<<<<<< HEAD
 
+=======
+					
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 					focusMap.extent(
 						[
 							{ lat : bounds[1], lon : bounds[0] },
 							{ lat : bounds[3], lon : bounds[2] }
 						]
 					).zoom(15.35);
+<<<<<<< HEAD
 
 
+=======
+					
+					
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 					//draw_raw_points();
 					generate_hexgrid();
 					generate_hexgrid_representations();
 				});
 			};
+<<<<<<< HEAD
 
 			function draw_raw_points()
 			{
 				var layer = d3.select( "#overviewMap svg" ).insert( "svg:g" );
 
+=======
+			
+			function draw_raw_points()
+			{
+				var layer = d3.select( "#overviewMap svg" ).insert( "svg:g" );
+				
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 				var marker = layer.selectAll( "circle" )
 						.data( data )
 					.enter().append( "svg:circle" )
@@ -139,7 +220,11 @@
 						.attr( "cx", function(d) { return map.locationPoint( { lon: d.geometry.coordinates[0], lat: d.geometry.coordinates[1] } ).x; } )
 						.attr( "cy", function(d) { return map.locationPoint( { lon: d.geometry.coordinates[0], lat: d.geometry.coordinates[1] } ).y; } );
 			};
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 			function generate_hexgrid()
 			{
 				hexset = d3.layout.hexbin()
@@ -147,9 +232,15 @@
 					.yValue( function(d) { return map.locationPoint( { lon: d.geometry.coordinates[0], lat: d.geometry.coordinates[1] } ).y; } )
 					.hexI( hexI )
 						( data );
+<<<<<<< HEAD
 
 				countMax = d3.max( hexset, function(d) { return d.data.length; } );	
 
+=======
+						
+				countMax = d3.max( hexset, function(d) { return d.data.length; } );	
+				
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 				scale = d3.scale.quantize()
    					.domain( [0,countMax] )
    					.range( d3.range( numClasses) );	
@@ -171,18 +262,31 @@
    					return map.locationPoint( { lon: d.geometry.coordinates[0], lat: d.geometry.coordinates[1] } ).y;
    				});
 			};
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 			function generate_hexgrid_representations()
 			{
 				//draw_hexgrid();
 				draw_choro_grid();
 			};
+<<<<<<< HEAD
 
 
 			function draw_hexgrid()
 			{
 				var layer = d3.select( "#overviewMap svg" ).insert( "svg:g" );
 
+=======
+			
+			
+			function draw_hexgrid()
+			{
+				var layer = d3.select( "#overviewMap svg" ).insert( "svg:g" );
+				
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 				var marker = layer.selectAll( "polygon" )
 						.data( hexset ) 
 					.enter().append( "svg:polygon" )
@@ -191,12 +295,20 @@
 						.attr( "fill", function(d) { return "none"; })
 						.attr( "points", function(d) { return d.pointString; } );
 			};
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 			function draw_choro_grid()
 			{
    					
 				var layer = d3.select( "#overviewMap svg" ).insert( "svg:g" ).attr( "class", cbScheme );
+<<<<<<< HEAD
 
+=======
+				
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 				var marker = layer.selectAll( "polygon" )
 						.data( hexset ) 
 					.enter().append( "svg:polygon" )
@@ -213,7 +325,11 @@
    							return 1;
    						})
 						.attr( "points", function(d) { return d.pointString; } )
+<<<<<<< HEAD
 
+=======
+						
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 						.on( "mouseover", function(d)
 						{
 							d3.select( this ).attr( "stroke", "#f00" ).attr( "stroke-width", 2 );
@@ -224,11 +340,16 @@
 							d3.select( this ).attr( "stroke", "none" );
 						});
 			};
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 			function on_overviewHex_highlight( hex )
 			{
 				// center focus map on this hex
 				center_focusMap_on_hex( hex );
+<<<<<<< HEAD
 
 				// update focus hex
 				update_focusMap_hex( hex );
@@ -238,11 +359,23 @@
 
 			};
 
+=======
+				
+				// update focus hex
+				update_focusMap_hex( hex );
+				
+				// update focus points
+				update_focusMap_points_by_hex( hex );
+				
+			};
+			
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 			function center_focusMap_on_hex( hex )
 			{
 				var center = hex.centre(),
 					x = xMin + ( center.x * hexI - .5 * hexI ),
 					y = yMax - ( center.y * hexI - .5 * hexI );
+<<<<<<< HEAD
 
 				var llCenter = map.pointLocation( { x : x, y : y } );
 
@@ -265,11 +398,36 @@
 
 				var pointString = pt_focus.x + ',' + pt_focus.y;
 
+=======
+							
+				var llCenter = map.pointLocation( { x : x, y : y } );
+							
+				focusMap.center(llCenter); 
+			};
+			
+			function update_focusMap_hex( hex )
+			{
+				var pathString = generate_pathString_from_points( hex.points );
+				
+				var extString = "M 0 0 L " + focusMap.size().x + " 0 " + focusMap.size().x + " " + focusMap.size().y + " 0 " + focusMap.size().y + " 0 0 Z";
+				
+				focusNonHex.attr( 'd', extString + ' ' + pathString );
+				focusHex.attr( 'd', pathString );
+			};
+			
+			function generate_pointString_from_points( points )
+			{
+				var i = 0, pt = points[i], pt_ll = map.pointLocation( pt ), pt_focus = focusMap.locationPoint( pt_ll );
+				
+				var pointString = pt_focus.x + ',' + pt_focus.y;
+				
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 				while ( ++i < points.length )
 				{
 					pt = points[i], 
 					pt_ll = map.pointLocation( pt ), 
 					pt_focus = focusMap.locationPoint( pt_ll );
+<<<<<<< HEAD
 
 					pointString += " " + pt_focus.x + ',' + pt_focus.y;
 				}
@@ -283,11 +441,27 @@
 
 				var pathString = "M " + pt_focus.x + " " + pt_focus.y + " L";
 
+=======
+					
+					pointString += " " + pt_focus.x + ',' + pt_focus.y;
+				}
+				
+				return pointString;
+			};
+			
+			function generate_pathString_from_points( points )
+			{
+				var i = 0, pt = points[i], pt_ll = map.pointLocation( pt ), pt_focus = focusMap.locationPoint( pt_ll );
+				
+				var pathString = "M " + pt_focus.x + " " + pt_focus.y + " L";
+				
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 				while ( ++i < points.length )
 				{
 					pt = points[i], 
 					pt_ll = map.pointLocation( pt ), 
 					pt_focus = focusMap.locationPoint( pt_ll );
+<<<<<<< HEAD
 
 					pathString += " " + pt_focus.x + ' ' + pt_focus.y;
 				}
@@ -296,12 +470,26 @@
 			};
 
 
+=======
+					
+					pathString += " " + pt_focus.x + ' ' + pt_focus.y;
+				}
+				
+				return pathString;
+			};
+			
+			
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 			function update_focusMap_points_by_hex( hex )
 			{
 				// select
 				var circles = focusPointLayer.selectAll( "circle" )
 					.data( hex.data );
+<<<<<<< HEAD
 
+=======
+				
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 				// enter
 				circles.enter().append( "svg:circle" )
 					.attr( "r", 3.5 )
@@ -313,8 +501,13 @@
 					{
 						return focusMap.locationPoint( { lon: d.geometry.coordinates[0], lat: d.geometry.coordinates[1] } ).y;
 					});
+<<<<<<< HEAD
 
 
+=======
+				
+				
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 				// update
 				circles
 					.attr( "cx", function(d)
@@ -325,17 +518,30 @@
 					{
 						return focusMap.locationPoint( { lon: d.geometry.coordinates[0], lat: d.geometry.coordinates[1] } ).y;
 					});
+<<<<<<< HEAD
 
+=======
+				
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 				// exit
 				circles.exit()
 					.remove();
 			}
+<<<<<<< HEAD
 
 		</script>
 
 
 	</head>
 
+=======
+			
+		</script>
+		
+		
+	</head>
+	
+>>>>>>> dedf799416ea083e07b046f3ed68d399d03f0584
 	<body onload="init()">
 		<h1>Walmart locations all hexed up</h1>
 		<div id="overviewMap" class="map"></div>
