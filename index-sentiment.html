@@ -1,7 +1,7 @@
 
 <html>
 	<head>
-		<title>Walmart locations all hexed up</title>
+		<title>TwitterGeo</title>
 		
 		<!-- styles -->
 		<link rel="stylesheet" type="text/css" href="./style/main.css" />
@@ -99,7 +99,7 @@
 			{
 				d3.json( dataURL, function( d )
 				{
-					alert("I'm Called");
+					
 
 					var bounds = d.extent,
 						hasGeo = d.features.filter( function(wm)
@@ -348,7 +348,7 @@
 	</head>
 	
 	<body onload="init()">
-		<h1>Walmart locations all hexed up</h1>
+		<h1>Twitter Geo</h1>
 		<div id="overviewMap" class="map"></div>
 		<div id="focusMap" class="map"></div>
 	</body>
