@@ -10,6 +10,8 @@ function onload() {
 	}
 	$('#results').html(text);
 	
+	alert(JSON.stringify(samanTest()));
+	
 };
 
 function getLanguageTweetsPerDay(year, month, day) {
@@ -39,4 +41,33 @@ function getLanguageTweetsPerDay(year, month, day) {
 	
 	return res;
 };
+
+function samanTest() {
+	
+	var doc = '';
+	$.ajax({
+		  type: 'GET',
+		  dataType: 'json',
+		  url: server + 'twittering_replica/_design/language/_view/coordinates',
+		  success: function(result) {
+			  doc = result;
+		  },
+		  async: false
+	});
+	
+	var res = {
+		"extent" : [150.821457,-34.026391,151.319962,-33.724244],
+		"features" : []
+	};
+	for (var i = 0; i < doc.total_rows; i++) {
+		var point = {
+			"geometry": {
+				"type" : "point",
+				"coordinates" : [doc.rows[i].value[1],doc.rows[i].value[2]]
+			}
+		}
+		res.features.push(point);
+	}
+	return res;
+}
 
