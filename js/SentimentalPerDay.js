@@ -2,7 +2,8 @@ var server = 'http://115.146.95.86/couchdb';
 //This function is just for text the other functions
 function onload() {
 
-	var res = sentimentalPerDay(2013,10,01);	
+	//var res = sentimentalPerDay(2013,10,01);	
+	var res = sentimental();	
 	//alert(JSON.stringify(res));
 	$('#results').html(JSON.stringify(res));
 
@@ -21,20 +22,20 @@ function sentimentalPerDay(year, month,day) {
 	$.ajax({
 		  type: 'GET',
 		  dataType: 'json',
-		  url: server + '/twitter/_design/sentimental/_view/sentimentalPerDay',
+		  url: server + '/twittering_replica/_design/sentimental/_view/sentimentalPerDay',
 		  data: { startkey: "["+year + ',' + month + ',' + day+"]",
 		           endkey: '['+year + ',' + month + ',' + (day)+']'
 		       },
 		  success: function(result) {
 			  json = result;		
-			  alert ('It gets the Json :)');	  
+			  // alert ('It gets the Json :)');	  
 		  },
 		  error: function(){
 		  	alert("error");
 		  },
-		  complete: function(){
-		  	alert("completed");
-		  },
+		  // complete: function(){
+		  // 	alert("completed");
+		  // },
 		  async:false
 	});
 
@@ -62,23 +63,21 @@ function sentimentalPerDay(year, month,day) {
 //After it convert in another Json object in the format that Saman needs
 //Input: No parameters
 //Output: Json object 
-function sentimental() {
-	month--;	
+function sentimental() {	
 	var json = '';
 	$.ajax({
 		  type: 'GET',
 		  dataType: 'json',
-		  url: server + '/twitter/_design/sentimental/_view/sentimentalPerDay',
+		  url: server + '/twittering_replica/_design/sentimental/_view/sentimentalPerDay',
 		  success: function(result) {
-			  json = result;		
-			  alert ('It gets the Json :)');	  
+			  json = result;			  
 		  },
 		  error: function(){
 		  	alert("error");
 		  },
-		  complete: function(){
-		  	alert("completed");
-		  },
+		  // complete: function(){
+		  // 	alert("completed");
+		  // },
 		  async:false
 	});
 
