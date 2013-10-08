@@ -15,16 +15,22 @@ function getNumberTweetsPerDay() {
 		  async: false
 	});
 	
-	var res = new Array();
+	var data = [
+	    {
+	    	key: "Sydney",
+	    	values: []
+	    }
+	]
+	
 	for (var i = 0; i < json.rows.length; i++) {
 		var k = json.rows[i].key;
 		var v = json.rows[i].value;
-		res[i] = new Array(2);
-		res[i][0] = k[0] + '-' + ++k[1] + '-' + k[2];
-		res[i][1] = v;
+		var time = new Date(k[0], k[1], k[2], 0, 0, 0, 0);
+		var element = [time.getTime(), v];
+		data[0].values.push(element);
 	}
 	
-	return res;
+	return data;
 };
 
 /* Returns in a bi-dimensional array the number of tweets per hour, on a specific day. 
@@ -46,16 +52,22 @@ function getNumberTweetsPerHour(year, month, day) {
 		  async: false
 	});
 	
-	var res = new Array();
+	var data = [
+	    {
+	    	key: "Sydney",
+	    	values: []
+	    }
+	]
+	
 	for (var i = 0; i < json.rows.length; i++) {
 		var k = json.rows[i].key;
 		var v = json.rows[i].value;
-		res[i] = new Array(2);
-		res[i][0] = k[3];
-		res[i][1] = v;
+		var time = new Date(k[0], k[1], k[2], k[3], 0, 0, 0);
+		var element = [time.getTime(), v];
+		data[0].values.push(element);
 	}
 	
-	return res;
+	return data;
 };
 
 /* Returns all the points in the json object format that the d3 library requires
@@ -102,7 +114,7 @@ function getD3JSONCountingOn(year, month, day) {
 		  dataType: 'json',
 		  url: server + 'twittering_replica/_design/counting/_view/coordinates'
 		  	+ '?startkey=[' + year + ',' + month + ',' + day + ']&endkey=[' + year 
-		  	+ ',' + month + ',' + (day + 1) + ']',
+		  	+ ',' + month + ',' + day + ']',
 		  success: function(result) {
 			  doc = result;
 		  },
