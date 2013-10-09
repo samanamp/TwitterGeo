@@ -21,7 +21,9 @@ function getLanguageTweetsPerRegion() {
 		"name": "Sydney",
 		"children": []
 	}
-	for (var i = 0; i < bboxes; i++) {
+	
+	// Execute one query per bbox region
+	for (var i = 0, skip = 0; i < bboxes.length; i++) {
 		$.ajax({
 			  type: 'GET',
 			  dataType: 'json',
@@ -38,21 +40,47 @@ function getLanguageTweetsPerRegion() {
 				"children": [],
 				"color": bboxes[i][5]
 		}
-		for (var i = 0; i < json.rows.length; i++) {
-			var k = json.rows[i].key;
-			var v = json.rows[i].value;
-			res[i] = new Array(2);
-			res[i][0] = k[0] + '-' + ++k[1] + '-' + k[2];
-			res[i][1] = v;
+		if (i == 2 || i == 10 || i == 12) { //2 bbox regions
+			child = res.children[i - 1 - skip];
+			skip++;
+		}
+		
+		//Process every element returned by the current bbox query
+		for (var j = 0; j < json.rows.length; j++) {
+			var v = json.rows[j].value;
+			var lang = codeToString(v[0]);
 			
-			var grandchild = {
-				"name": "English",
-				"size": 20000,
-				"color": 
+			//Ignore the small languages
+			if (!filterMainLanguages(v[0]))
+				continue;
+			
+			//Reduce the values using our own sum.
+			if (child.children.length == 0) { //Insert the first child
+				var grandchild = {
+					"name": lang,
+					"size": 1,
+					"color": codeToColor(v[0])
+				}
+				child.children.push(grandchild);
+			} else for (var c = 0; c < child.children.length; c++) {
+				if (child.children[c].name == lang) {
+					child.children[c].size += 1;
+					break;
+				} else if (c == child.children.length - 1) { //Last case
+					var grandchild = {
+							"name": lang,
+							"size": 1,
+							"color": codeToColor(v[0])
+					}
+					child.children.push(grandchild);
+					break;
+				}
 			}
 		}
 		
-		res.children.push(child);
+		if (i != 2 && i != 10 && i != 12) { //Push the new region
+			res.children.push(child);
+		}
 	}
 	
 	return res;
@@ -131,6 +159,8 @@ function getD3JSONLanguageOn(language, year, month, day) {
 	return res;
 }
 
+/* Translates the two character code of a language to the 
+ * actual name of that language */
 function codeToString(code) {
 	switch (code) {
 	case "ar": return "Arabic";
@@ -176,7 +206,8 @@ function codeToString(code) {
 	}
 };
 
-var codeToColor(code) {
+/* Returns a color for a two character code of a language */
+function codeToColor(code) {
 	switch (code) {
 	case "ar": return "#FF6600";
 	case "bg": return "#666633";
@@ -221,6 +252,8 @@ var codeToColor(code) {
 	}
 }
 
+/* Determines if a language is one of the main languages
+ * that have many tweet occurrences. */
 function filterMainLanguages(code) {
 	switch (code) {
 	case "ar": return true;
