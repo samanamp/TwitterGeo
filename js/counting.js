@@ -1,8 +1,14 @@
 
-/* Returns in a bi-dimensional array the number of tweets per day. The
- * first element is date in the format YYYY-MM-DD, and the second the
- * number of tweets e.g. res[0][0] = '2013-08-30' and res[0][1] = 500.
+/* Location of the couchdb proxy. Please make sure a proxy is configured
+ * for the apache server pointed by this URL.
  */
+var server = "http://localhost/couchdb";
+
+/* For detail on the output json objects these function return please look at
+ * the data input specifications for the d3 libraries.
+ */
+
+/* Returns the total number of tweets generated per day. */
 function getNumberTweetsPerDay() {
 	var json = '';
 	$.ajax({
@@ -33,10 +39,8 @@ function getNumberTweetsPerDay() {
 	return data;
 };
 
-/* Returns in a bi-dimensional array the number of tweets per hour, on a specific day. 
- * The first element is the hour in the format HH24, and the second the
- * number of tweets e.g. res[0][0] = '19' and res[0][1] = 500.
- */
+/* Returns the total number of tweets per hour on a specific day.
+ * The day is specified in the arguments year, month and day */
 function getNumberTweetsPerHour(year, month, day) {
 	var json = '';
 	month--;
