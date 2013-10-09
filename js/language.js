@@ -1,57 +1,58 @@
-/* Returns in a bi-dimensional array the number of tweets per day. The
- * first element is date in the format YYYY-MM-DD, and the second the
- * number of tweets e.g. res[0][0] = '2013-08-30' and res[0][1] = 500.
- */
-function getLanguageTweetsPerDay() {
-	var json = '';
-	$.ajax({
-		  type: 'GET',
-		  dataType: 'json',
-		  url: server + 'twittering_replica/_design/counting/_view/per_hour?group_level=3',
-		  success: function(result) {
-			  json = result;
-		  },
-		  async: false
-	});
-	
-	var res = new Array();
-	for (var i = 0; i < json.rows.length; i++) {
-		var k = json.rows[i].key;
-		var v = json.rows[i].value;
-		res[i] = new Array(2);
-		res[i][0] = k[0] + '-' + ++k[1] + '-' + k[2];
-		res[i][1] = v;
-	}
-	
-	return res;
-};
 
-/* Returns in a bi-dimensional array the number of tweets per hour, on a specific day. 
- * The first element is the hour in the format HH24, and the second the
- * number of tweets e.g. res[0][0] = '19' and res[0][1] = 500.
- */
-function getLanguageTweetsPerHour(year, month, day) {
+function getLanguageTweetsPerRegion() {
 	var json = '';
-	month--;
-	$.ajax({
-		  type: 'GET',
-		  dataType: 'json',
-		  url: server + 'twittering_replica/_design/counting/_view/per_hour?group_level=4'
-		  	+ '&startkey=[' + year + ',' + month + ',' + day + ']&endkey=[' + year 
-		  	+ ',' + month + ',' + (day + 1) + ']',
-		  success: function(result) {
-			  json = result;
-		  },
-		  async: false
-	});
+	var bboxes = [
+	   [151.186,-33.909,151.233,-33.854,'City','#B20000'],
+	   [151.233,-34.052,151.288,-33.852,'East','#006600'], //East1
+	   [151.186,-34.052,151.233,-33.909,'East','#006600'], //East2
+	   [151.233,-33.852,151.345,-33.575,'Northeast','#003399'],
+	   [151.067,-33.854,151.233,-33.755,'Inner North','#009999'],
+	   [151.067,-33.775,151.233,-33.462,'North','#00CC66'],
+	   [151.067,-33.909,151.186,-33.854,'Inner West','#FFCC00'],
+	   [150.975,-34.147,151.186,-33.909,'South','#5A0000'],
+	   [150.850,-33.909,151.067,-33.775,'West Central','#FF9933'],
+	   [150.061,-34.310,150.850,-33.846,'South West','#663300'], //South West1
+	   [150.850,-34.310,150.975,-33.909,'South West','#663300'], //South West2
+	   [150.061,-33.846,150.850,-33.144,'North West','#FFFF66'], //North West1
+	   [150.850,-33.775,151.067,-33.144,'North West','#FFFF66'] //North West2
+	];
 	
-	var res = new Array();
-	for (var i = 0; i < json.rows.length; i++) {
-		var k = json.rows[i].key;
-		var v = json.rows[i].value;
-		res[i] = new Array(2);
-		res[i][0] = k[3];
-		res[i][1] = v;
+	var res = {
+		"name": "Sydney",
+		"children": []
+	}
+	for (var i = 0; i < bboxes; i++) {
+		$.ajax({
+			  type: 'GET',
+			  dataType: 'json',
+			  url: server + 'twittering_replica/_design/language/_spatial/points?bbox='
+			  	+ bboxes[i][0] + ',' + bboxes[i][1] + ',' + bboxes[i][2] + ',' + bboxes[i][3],
+			  success: function(result) {
+				  json = result;
+			  },
+			  async: false
+		});
+		
+		var child = {
+				"name": bboxes[i][4],
+				"children": [],
+				"color": bboxes[i][5]
+		}
+		for (var i = 0; i < json.rows.length; i++) {
+			var k = json.rows[i].key;
+			var v = json.rows[i].value;
+			res[i] = new Array(2);
+			res[i][0] = k[0] + '-' + ++k[1] + '-' + k[2];
+			res[i][1] = v;
+			
+			var grandchild = {
+				"name": "English",
+				"size": 20000,
+				"color": 
+			}
+		}
+		
+		res.children.push(child);
 	}
 	
 	return res;
@@ -105,7 +106,7 @@ function getD3JSONLanguageOn(language, year, month, day) {
 		  dataType: 'json',
 		  url: server + 'twittering_replica/_design/language/_view/coordinates'
 		  	+ '?startkey=[' + year + ',' + month + ',' + day + ']&endkey=[' + year 
-		  	+ ',' + month + ',' + (day + 1) + ']',
+		  	+ ',' + month + ',' + day + ']',
 		  success: function(result) {
 			  doc = result;
 		  },
@@ -128,4 +129,118 @@ function getD3JSONLanguageOn(language, year, month, day) {
 		res.features.push(point);
 	}
 	return res;
+}
+
+function codeToString(code) {
+	switch (code) {
+	case "ar": return "Arabic";
+	case "bg": return "Bulgarian";
+	case "bn": return "Bengali";
+	case "da": return "Danish";
+	case "de": return "German";
+	case "el": return "Greek";
+	case "en": return "English";
+	case "es": return "Spanish";
+	case "et": return "Estonian";
+	case "fa": return "Persian";
+	case "fi": return "Finish";
+	case "fr": return "French";
+	case "he": return "Hebrew";
+	case "hi": return "Hindi";
+	case "ht": return "Haitian Creole";
+	case "hu": return "Hungarian";
+	case "id": return "Indonesian";
+	case "it": return "Italian";
+	case "ja": return "Japanese";
+	case "ko": return "Korean";
+	case "lt": return "Lithuanian";
+	case "lv": return "Latvian";
+	case "ne": return "Nepali";
+	case "nl": return "Dutch";
+	case "no": return "Norweigan";
+	case "pl": return "Polish";
+	case "pt": return "Portuguese";
+	case "ru": return "Russian";
+	case "sk": return "Slovak";
+	case "sl": return "Slovenian";
+	case "sv": return "Swedish";
+	case "ta": return "Tamil";
+	case "th": return "Thai";
+	case "tl": return "Tagalog";
+	case "tr": return "Turkish";
+	case "und": return "Undetermined";
+	case "ur": return "Urdu";
+	case "vi": return "Vietnamese";
+	case "zh": return "Chinese";
+	default: return "Unknown";
+	}
+};
+
+var codeToColor(code) {
+	switch (code) {
+	case "ar": return "#FF6600";
+	case "bg": return "#666633";
+	case "bn": return "#FF6600";
+	case "da": return "#6699FF";
+	case "de": return "#0099CC";
+	case "el": return "#99FF99";
+	case "en": return "#0033CC";
+	case "es": return "#4747B2";
+	case "et": return "#999966";
+	case "fa": return "#FF9966";
+	case "fi": return "#006600";
+	case "fr": return "#6600FF";
+	case "he": return "#99FFCC";
+	case "hi": return "#FF9966";
+	case "ht": return "#FF0066";
+	case "hu": return "#996633";
+	case "id": return "#660033";
+	case "it": return "#B2476B";
+	case "ja": return "#669999";
+	case "ko": return "#666699";
+	case "lt": return "#663300";
+	case "lv": return "#996600";
+	case "ne": return "#336699";
+	case "nl": return "#6666FF";
+	case "no": return "#00CC99";
+	case "pl": return "#CC9900";
+	case "pt": return "#661A80";
+	case "ru": return "#CCCC00";
+	case "sk": return "#99CC00";
+	case "sl": return "#669900";
+	case "sv": return "#339933";
+	case "ta": return "#990000";
+	case "th": return "#993300";
+	case "tl": return "#FFFF66";
+	case "tr": return "#FF9933";
+	case "und": return "#000000";
+	case "ur": return "#FF5050";
+	case "vi": return "#FF9966";
+	case "zh": return "#CC0000";
+	default: return "#000000";
+	}
+}
+
+function filterMainLanguages(code) {
+	switch (code) {
+	case "ar": return true;
+	case "de": return true;
+	case "en": return true;
+	case "es": return true;
+	case "et": return true;
+	case "fa": return true;
+	case "fr": return true;
+	case "id": return true;
+	case "it": return true;
+	case "ja": return true;
+	case "ko": return true;
+	case "nl": return true;
+	case "pl": return true;
+	case "th": return true;
+	case "tl": return true;
+	case "tr": return true;
+	case "vi": return true;
+	case "zh": return true;
+	default: return false;
+	}
 }
